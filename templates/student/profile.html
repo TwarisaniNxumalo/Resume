@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Profile | CV Drop</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #667eea;
+            --secondary-color: #764ba2;
+            --light-bg: #f8f9fa;
+            --dark-text: #2d3748;
+            --border-color: #e2e8f0;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f5f7fa;
+            color: var(--dark-text);
+        }
+        
+        .navbar {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 1rem 0;
+        }
+        
+        .navbar-brand {
+            font-weight: 700;
+            font-size: 1.5rem;
+            letter-spacing: -0.5px;
+        }
+        
+        .nav-link {
+            font-weight: 500;
+            margin-left: 1rem;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+        }
+        
+        .nav-link i {
+            margin-right: 8px;
+            font-size: 0.9rem;
+        }
+        
+        .nav-link:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
+        }
+        
+        .profile-container {
+            margin-top: 2rem;
+            margin-bottom: 3rem;
+        }
+        
+        .profile-header {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+            margin-bottom: 2rem;
+        }
+        
+        .profile-form {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+        }
+        
+        .form-section {
+            margin-bottom: 2rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .form-section:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+        
+        .form-section h4 {
+            color: var(--primary-color);
+            margin-bottom: 1.5rem;
+            font-weight: 600;
+        }
+        
+        .form-label {
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+            color: var(--dark-text);
+        }
+        
+        .form-control, .form-select {
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 0.75rem 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .form-control:focus, .form-select:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 0.25rem rgba(102, 126, 234, 0.25);
+        }
+        
+        textarea.form-control {
+            min-height: 100px;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            border: none;
+            padding: 0.75rem 2rem;
+            font-weight: 500;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        }
+        
+        .alert {
+            border-radius: 8px;
+            padding: 1rem 1.5rem;
+        }
+        
+        .alert-info {
+            background-color: rgba(102, 126, 234, 0.1);
+            border-left: 4px solid var(--primary-color);
+            color: var(--dark-text);
+        }
+        
+        @media (max-width: 768px) {
+            .navbar-nav {
+                margin-top: 1rem;
+            }
+            
+            .nav-link {
+                margin-left: 0;
+                padding: 0.5rem 0;
+            }
+            
+            .profile-container {
+                margin-top: 1rem;
+            }
+            
+            .profile-header, .profile-form {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container">
+            <a class="navbar-brand" href="{{ url_for('index') }}">CV Drop</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <div class="navbar-nav ms-auto">
+                    <a class="nav-link" href="{{ url_for('student_dashboard') }}">
+                        <i class="fas fa-tachometer-alt"></i> Dashboard
+                    </a>
+                    <a class="nav-link active" href="{{ url_for('student_profile') }}">
+                        <i class="fas fa-user"></i> Profile
+                    </a>
+                    <a class="nav-link" href="{{ url_for('student_upload_cv') }}">
+                        <i class="fas fa-upload"></i> Upload CV
+                    </a>
+                    <a class="nav-link" href="{{ url_for('logout') }}">
+                        <i class="fas fa-sign-out-alt"></i> Logout
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container profile-container">
+        <div class="profile-header">
+            <h2>Edit Your Profile</h2>
+            <p class="text-muted">Complete your profile to increase your visibility to employers</p>
+            
+            <!-- Example alert for new profile -->
+            <div class="alert alert-info d-flex align-items-center">
+                <i class="fas fa-info-circle me-2"></i>
+                <div>Please fill out your profile information below. All fields are required to complete your profile.</div>
+            </div>
+        </div>
+        
+        <form class="profile-form" method="post" action="{{ url_for('student_profile') }}">
+            <!-- Personal Information Section -->
+            <div class="form-section">
+                <h4><i class="fas fa-user-circle me-2"></i>Personal Information</h4>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="name" class="form-label">Full Name</label>
+                        <input type="text" class="form-control" id="name" name="name" value="{{ profile.name or '' }}" required>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="contact" class="form-label">Contact</label>
+                        <input type="text" class="form-control" id="contact" name="contact" value="{{ profile.contact or '' }}" required>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Education Section -->
+            <div class="form-section">
+                <h4><i class="fas fa-graduation-cap me-2"></i>Education</h4>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="course" class="form-label">Course/Degree</label>
+                        <input type="text" class="form-control" id="course" name="course" value="{{ profile.course or '' }}" required>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="institution" class="form-label">Institution</label>
+                        <input type="text" class="form-control" id="institution" name="institution" value="{{ profile.institution or '' }}" required>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label for="graduation_status" class="form-label">Graduation Status</label>
+                    <select class="form-select" id="graduation_status" name="graduation_status" required>
+                        <option value="">Select Status</option>
+                        <option value="Graduated" {% if profile.graduation_status == 'Graduated' %}selected{% endif %}>Graduated</option>
+                        <option value="In Progress" {% if profile.graduation_status == 'In Progress' %}selected{% endif %}>In Progress</option>
+                        <option value="Not Started" {% if profile.graduation_status == 'Not Started' %}selected{% endif %}>Not Started</option>
+                    </select>
+                </div>
+            </div>
+            
+            <!-- Skills Section -->
+            <div class="form-section">
+                <h4><i class="fas fa-tools me-2"></i>Skills</h4>
+                <div class="mb-3">
+                    <label for="skills" class="form-label">List your skills (separate with commas)</label>
+                    <textarea class="form-control" id="skills" name="skills" rows="2">{{ profile.skills or '' }}</textarea>
+                </div>
+            </div>
+            
+            <!-- Experience Section -->
+            <div class="form-section">
+                <h4><i class="fas fa-briefcase me-2"></i>Experience</h4>
+                <div class="mb-3">
+                    <label for="experience" class="form-label">Describe your work experience</label>
+                    <textarea class="form-control" id="experience" name="experience" rows="3">{{ profile.experience or '' }}</textarea>
+                </div>
+            </div>
+            
+            <!-- Projects Section -->
+            <div class="form-section">
+                <h4><i class="fas fa-project-diagram me-2"></i>Projects</h4>
+                <div class="mb-3">
+                    <label for="projects" class="form-label">Describe your notable projects</label>
+                    <textarea class="form-control" id="projects" name="projects" rows="3">{{ profile.projects or '' }}</textarea>
+                </div>
+            </div>
+            
+            <!-- Certifications & Awards Section -->
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-section">
+                        <h4><i class="fas fa-certificate me-2"></i>Certifications</h4>
+                        <div class="mb-3">
+                            <label for="certifications" class="form-label">List your certifications</label>
+                            <textarea class="form-control" id="certifications" name="certifications" rows="2">{{ profile.certifications or '' }}</textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-section">
+                        <h4><i class="fas fa-trophy me-2"></i>Awards</h4>
+                        <div class="mb-3">
+                            <label for="awards" class="form-label">List your awards</label>
+                            <textarea class="form-control" id="awards" name="awards" rows="2">{{ profile.awards or '' }}</textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="d-flex justify-content-end mt-4">
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-save me-2"></i>Save Profile
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

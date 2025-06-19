@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - CV Drop</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .register-container {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 450px;
+            padding: 40px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .register-container:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.15);
+        }
+
+        .register-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .register-header h1 {
+            color: #333;
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .register-header p {
+            color: #666;
+            font-size: 1rem;
+            opacity: 0.8;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+            position: relative;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 600;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .form-input, .form-select {
+            width: 100%;
+            padding: 15px 20px;
+            border: 2px solid #e1e8ed;
+            border-radius: 12px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: #fff;
+            outline: none;
+        }
+
+        .form-input:focus, .form-select:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .form-input:hover, .form-select:hover {
+            border-color: #b8c5f2;
+        }
+
+        .form-select {
+            cursor: pointer;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 15px;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            outline: none;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            margin-bottom: 20px;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
+            background: linear-gradient(135deg, #5a6fd8 0%, #6a4190 100%);
+        }
+
+        .btn-primary:active {
+            transform: translateY(0);
+        }
+
+        .btn-primary:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .btn-link {
+            background: transparent;
+            color: #667eea;
+            text-decoration: none;
+            border: 2px solid #667eea;
+            display: inline-block;
+            text-align: center;
+        }
+
+        .btn-link:hover {
+            background: #667eea;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.2);
+        }
+
+        .alert {
+            padding: 15px 20px;
+            border-radius: 12px;
+            margin-bottom: 25px;
+            font-weight: 500;
+            border-left: 4px solid;
+            animation: slideInDown 0.5s ease;
+        }
+
+        .alert-danger {
+            background-color: #ffe6e6;
+            color: #cc0000;
+            border-left-color: #ff4444;
+        }
+
+        .alert-success {
+            background-color: #e6ffe6;
+            color: #006600;
+            border-left-color: #44ff44;
+        }
+
+        .alert-info {
+            background-color: #e6f3ff;
+            color: #0066cc;
+            border-left-color: #4499ff;
+        }
+
+        @keyframes slideInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .divider {
+            text-align: center;
+            margin: 30px 0;
+            position: relative;
+            color: #666;
+        }
+
+        .divider::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(to right, transparent, #ddd, transparent);
+        }
+
+        .divider span {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 0 20px;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .footer-text {
+            text-align: center;
+            margin-top: 30px;
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .footer-text a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .footer-text a:hover {
+            text-decoration: underline;
+        }
+
+        .password-requirements {
+            font-size: 0.8rem;
+            color: #666;
+            margin-top: 5px;
+            padding: 10px;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 480px) {
+            .register-container {
+                padding: 30px 20px;
+                margin: 10px;
+            }
+            
+            .register-header h1 {
+                font-size: 2rem;
+            }
+            
+            .form-input, .form-select {
+                padding: 12px 15px;
+            }
+            
+            .btn {
+                padding: 12px;
+                font-size: 1rem;
+            }
+        }
+
+        /* Loading animation for form submission */
+        .btn-primary.loading {
+            position: relative;
+            color: transparent;
+        }
+
+        .btn-primary.loading::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 20px;
+            height: 20px;
+            border: 2px solid transparent;
+            border-top: 2px solid white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: translate(-50%, -50%) rotate(360deg);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="register-container">
+        <div class="register-header">
+            <h1>CV Drop</h1>
+            <p>Create your account to get started</p>
+        </div>
+
+        <!-- Flash Messages -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ 'danger' if category == 'error' else category }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <form id="registerForm" method="POST" action="{{ url_for('register') }}">
+            <div class="form-group">
+                <label for="email" class="form-label">Email Address</label>
+                <input type="email" class="form-input" id="email" name="email" required 
+                       placeholder="Enter your email address" value="{{ request.form.email if request.form.email }}">
+            </div>
+
+            <div class="form-group">
+                <label for="password" class="form-label">Password</label>
+                <input type="password" class="form-input" id="password" name="password" required 
+                       placeholder="Create a strong password" minlength="6">
+                <div class="password-requirements">
+                    Password must be at least 6 characters long
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="confirm_password" class="form-label">Confirm Password</label>
+                <input type="password" class="form-input" id="confirm_password" name="confirm_password" required 
+                       placeholder="Confirm your password">
+            </div>
+
+            <button type="submit" class="btn btn-primary" id="registerBtn">Create Account</button>
+            
+            <div class="divider">
+                <span>or</span>
+            </div>
+            
+            <a href="{{ url_for('login') }}" class="btn btn-link">Already have an account? Sign In</a>
+        </form>
+
+        <div class="footer-text">
+            <p>By creating an account, you agree to our <a href="#" onclick="alert('Terms of Service coming soon!')">Terms of Service</a></p>
+        </div>
+    </div>
+
+    <script>
+        // Form validation and submission
+        const form = document.getElementById('registerForm');
+        const registerBtn = document.getElementById('registerBtn');
+        const password = document.getElementById('password');
+        const confirmPassword = document.getElementById('confirm_password');
+
+        // Password confirmation validation
+        function validatePasswords() {
+            if (password.value !== confirmPassword.value) {
+                confirmPassword.setCustomValidity("Passwords don't match");
+                return false;
+            } else {
+                confirmPassword.setCustomValidity('');
+                return true;
+            }
+        }
+
+        confirmPassword.addEventListener('input', validatePasswords);
+        password.addEventListener('input', validatePasswords);
+
+        // Form submission
+        form.addEventListener('submit', function(e) {
+            if (!validatePasswords()) {
+                e.preventDefault();
+                alert("Passwords don't match!");
+                return;
+            }
+            
+            // Add loading state
+            registerBtn.classList.add('loading');
+            registerBtn.disabled = true;
+        });
+
+        // Auto-focus first input
+        document.getElementById('email').focus();
+
+        // Form field interactions
+        const inputs = document.querySelectorAll('.form-input, .form-select');
+        inputs.forEach(input => {
+            input.addEventListener('focus', function() {
+                this.parentNode.classList.add('focused');
+            });
+            
+            input.addEventListener('blur', function() {
+                if (this.value === '') {
+                    this.parentNode.classList.remove('focused');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
