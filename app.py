@@ -94,7 +94,7 @@ def create_app():
                 return render_template('register.html')
             
             try:
-                user = User(email=email, role='student')
+                user = User(email=email, role='employer')
                 user.set_password(password)
                 db.session.add(user)
                 db.session.commit()
