@@ -45,14 +45,16 @@ class CV(db.Model):
 
 def create_app():
     app = Flask(__name__)
-    app.config['SECRET_KEY'] = 'your-secret-key-change-this-in-production'
     
-    # Fix the database path - use relative path or ensure the directory exists
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///cv_drop.db'
+    # Use environment variables for production
+    app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'your-secret-key-change-this-in-production')
+    
+    # For Azure, use absolute path for database
+    app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL', 'sqlite:////home/site/wwwroot/cv_drop.db')
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     
-    # Fix upload folder path
-    app.config['UPLOAD_FOLDER'] = os.path.join(os.getcwd(), 'uploads')
+    # Azure-friendly upload folder
+    app.config['UPLOAD_FOLDER'] = os.environ.get('UPLOAD_FOLDER', '/home/site/wwwroot/uploads')
 
     db.init_app(app)
     login_manager.init_app(app)
@@ -76,12 +78,11 @@ def create_app():
         if request.method == 'POST':
             email = request.form.get('email', '').strip()
             password = request.form.get('password', '')
-            # role = request.form.get('role', '')  # Remove this line
             
             print(f"Registration attempt: email={email}")
             
             # Validation
-            if not email or not password:  # Remove 'or not role'
+            if not email or not password:
                 print("Validation failed: missing fields")
                 flash('All fields are required.', 'danger')
                 return render_template('register.html')
@@ -93,7 +94,7 @@ def create_app():
                 return render_template('register.html')
             
             try:
-                user = User(email=email, role='student')  # Set role to 'student'
+                user = User(email=email, role='student')
                 user.set_password(password)
                 db.session.add(user)
                 db.session.commit()
@@ -435,8 +436,6 @@ def create_app():
             "instructions": "Please use these details to contact us or access employer resources."
         }
         return render_template('employer/details.html', employer_info=employer_info)
-    
-    
 
     # Error handlers
     @app.errorhandler(404)
@@ -450,7 +449,6 @@ def create_app():
 
     # Create tables
     with app.app_context():
-        db.create_all()
         try:
             db.create_all()
             print("Database tables created successfully!")
@@ -464,6 +462,9 @@ def create_app():
 
     return app
 
+# CRITICAL: This line is needed for Azure deployment
+# Create the app instance at module level so gunicorn can find it
+app = create_app()
+
 if __name__ == "__main__":
-    app = create_app()
     app.run(debug=True, host='127.0.0.1', port=5000)
